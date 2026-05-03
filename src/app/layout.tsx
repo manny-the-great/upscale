@@ -1,9 +1,10 @@
+import React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-import { ConsentModal } from "@/components/modals/consent-modal";
+import { Navbar } from "../components/layout/navbar";
+import { Footer } from "../components/layout/footer";
+import { ConsentModal } from "../components/modals/consent-modal";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 

@@ -1,8 +1,9 @@
-import { Hero } from "@/components/sections/hero";
-import { TrustBar } from "@/components/sections/trust-bar";
-import { Features } from "@/components/sections/features";
-import { UploadInterface } from "@/components/enhancer/upload-interface";
-import { Pricing } from "@/components/sections/pricing";
+import React from "react";
+import { Hero } from "../components/sections/hero";
+import { TrustBar } from "../components/sections/trust-bar";
+import { Features } from "../components/sections/features";
+import { UploadInterface } from "../components/enhancer/upload-interface";
+import { Pricing } from "../components/sections/pricing";
 
 export default function Home() {
   return (
