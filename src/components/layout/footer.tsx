@@ -8,7 +8,7 @@ export function Footer() {
           <div className="w-6 h-6 rounded bg-white/20 flex items-center justify-center">
             <div className="w-3 h-3 bg-white rounded-sm transform rotate-45" />
           </div>
-          <span className="font-semibold tracking-tight text-white/80">EnhanceAI X</span>
+          <span className="font-semibold tracking-tight text-white/80">UpscaleAI X</span>
         </div>
         
         <div className="flex items-center gap-8 text-sm text-white/50">
@@ -19,7 +19,7 @@ export function Footer() {
         </div>
         
         <div className="text-sm text-white/30">
-          &copy; {new Date().getFullYear()} EnhanceAI X. All rights reserved.
+          &copy; {new Date().getFullYear()} UpscaleAI X. All rights reserved.
         </div>
       </div>
     </footer>

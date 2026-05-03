@@ -10,7 +10,7 @@ export function Navbar() {
           <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
             <div className="w-4 h-4 bg-black rounded-sm transform rotate-45" />
           </div>
-          <span className="font-bold text-xl tracking-tight text-glow">EnhanceAI X</span>
+          <span className="font-bold text-xl tracking-tight text-glow">UpscaleAI X</span>
         </div>
         
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">

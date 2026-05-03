@@ -9,7 +9,7 @@ export function ConsentModal() {
 
   useEffect(() => {
     // Check local storage to see if user has already agreed
-    const hasAgreed = localStorage.getItem("enhanceAI_consent")
+    const hasAgreed = localStorage.getItem("upscaleAI_consent")
     if (!hasAgreed) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsOpen(true)
@@ -17,7 +17,7 @@ export function ConsentModal() {
   }, [])
 
   const handleAgree = () => {
-    localStorage.setItem("enhanceAI_consent", "true")
+    localStorage.setItem("upscaleAI_consent", "true")
     setIsOpen(false)
   }
 

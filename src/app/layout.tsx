@@ -10,7 +10,7 @@ const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-br
 const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-poppins" });
 
 export const metadata: Metadata = {
-  title: "EnhanceAI X - Premium Image Enhancement",
+  title: "UpscaleAI X - Premium Image Enhancement",
   description: "Upscale, sharpen, restore, and transform low quality images into crystal clear visuals using advanced AI.",
 };
 
