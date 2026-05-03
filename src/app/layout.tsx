@@ -1,12 +1,13 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Bricolage_Grotesque, Poppins } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "../components/layout/navbar";
 import { Footer } from "../components/layout/footer";
 import { ConsentModal } from "../components/modals/consent-modal";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-bricolage" });
+const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-poppins" });
 
 export const metadata: Metadata = {
   title: "EnhanceAI X - Premium Image Enhancement",
@@ -20,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}>
+      <body className={`${bricolage.variable} ${poppins.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}>
         <ConsentModal />
         <Navbar />
         <main className="flex-grow">
