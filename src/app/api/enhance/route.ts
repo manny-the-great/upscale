@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       message: `Processed using ${body.engine} with mode ${body.mode} to ${body.resolution}`
     });
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Failed to process image" }, { status: 500 });
   }
 }

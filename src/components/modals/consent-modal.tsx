@@ -11,7 +11,7 @@ export function ConsentModal() {
     // Check local storage to see if user has already agreed
     const hasAgreed = localStorage.getItem("enhanceAI_consent")
     if (!hasAgreed) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsOpen(true)
     }
   }, [])
