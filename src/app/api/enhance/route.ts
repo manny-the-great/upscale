@@ -1,47 +1,53 @@
 import { NextRequest, NextResponse } from "next/server";
+import Replicate from "replicate";
 
-// This is a modular backend-ready architecture for AI Engine Integrations.
-// You can easily swap APIs by implementing different engine handlers.
-
-type EnhancementEngine = "Real-ESRGAN" | "GFPGAN" | "ESRGAN" | "StableDiffusion";
-
-interface EnhanceRequest {
-  imageUrl: string;
-  resolution: string;
-  mode: string;
-  engine: EnhancementEngine;
-}
+const replicate = new Replicate({
+  auth: process.env.REPLICATE_API_TOKEN || "",
+});
 
 export async function POST(req: NextRequest) {
   try {
-    const body: EnhanceRequest = await req.json();
-    
-    // Abstracting different AI models
-    switch (body.engine) {
-      case "Real-ESRGAN":
-        // return await processWithRealESRGAN(body);
-        break;
-      case "GFPGAN":
-        // return await processWithGFPGAN(body);
-        break;
-      case "ESRGAN":
-        // return await processWithESRGAN(body);
-        break;
-      case "StableDiffusion":
-        // return await processWithStableDiffusionUpscaler(body);
-        break;
-      default:
-        return NextResponse.json({ error: "Unsupported AI Engine" }, { status: 400 });
+    if (!process.env.REPLICATE_API_TOKEN) {
+      return NextResponse.json({ error: "Replicate API token is not configured in environment variables." }, { status: 500 });
     }
 
-    // Mock Response for currently unintegrated APIs
+    const body = await req.json();
+    const { image, mode, resolution } = body;
+
+    if (!image) {
+      return NextResponse.json({ error: "Image is required" }, { status: 400 });
+    }
+
+    // Determine scale based on resolution requested
+    let scale = 2;
+    if (resolution === "4K" || resolution === "8K") scale = 4;
+    
+    // Determine face enhancement based on mode
+    let face_enhance = false;
+    if (mode === "Face Restore" || mode === "Full Enhance") {
+      face_enhance = true;
+    }
+
+    // Run nightmareai/real-esrgan
+    const output = await replicate.run(
+      "nightmareai/real-esrgan:42fed1c4974146d4d2414e2be2c5277c7fcf05fcc3a73abf41610695738c1d7b",
+      {
+        input: {
+          image: image,
+          scale: scale,
+          face_enhance: face_enhance,
+        }
+      }
+    );
+
     return NextResponse.json({
       success: true,
-      enhancedImageUrl: "https://example.com/enhanced.jpg",
-      message: `Processed using ${body.engine} with mode ${body.mode} to ${body.resolution}`
+      enhancedImageUrl: output, 
     });
 
-  } catch (_error) {
-    return NextResponse.json({ error: "Failed to process image" }, { status: 500 });
+  } catch (error: unknown) {
+    console.error("Enhancement error:", error);
+    const msg = error instanceof Error ? error.message : "Failed to process image";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

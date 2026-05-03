@@ -16,6 +16,13 @@ export function UploadInterface() {
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  const toBase64 = (f: File) => new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(f)
+    reader.onload = () => resolve(reader.result as string)
+    reader.onerror = error => reject(error)
+  })
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
@@ -32,24 +39,48 @@ export function UploadInterface() {
     setProgress(0)
   }
 
-  const startEnhancement = () => {
+  const startEnhancement = async () => {
     if (!file) return
     setIsProcessing(true)
     setIsDone(false)
-    setProgress(0)
+    setProgress(10)
     
-    // Simulate AI Processing
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval)
-          setIsProcessing(false)
-          setIsDone(true)
-          return 100
-        }
-        return prev + 5
+    try {
+      // 1. Convert image to base64
+      const base64Image = await toBase64(file)
+      setProgress(30)
+
+      // 2. Send to API
+      const response = await fetch('/api/enhance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          image: base64Image,
+          resolution,
+          mode
+        })
       })
-    }, 200)
+
+      setProgress(80)
+
+      const data = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to enhance image")
+      }
+
+      // 3. Update UI with real image
+      setPreview(data.enhancedImageUrl)
+      setIsProcessing(false)
+      setIsDone(true)
+      setProgress(100)
+
+    } catch (error) {
+      console.error(error)
+      alert("Error: " + (error as Error).message)
+      setIsProcessing(false)
+      setProgress(0)
+    }
   }
 
   return (
@@ -164,7 +195,15 @@ export function UploadInterface() {
 
               <div className="mt-auto pt-8">
                 {isDone ? (
-                  <Button className="w-full h-14 text-lg rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                  <Button className="w-full h-14 text-lg rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.3)]" onClick={() => {
+                    const link = document.createElement('a')
+                    link.href = preview || ''
+                    link.download = 'enhanced-image.png'
+                    link.target = '_blank'
+                    document.body.appendChild(link)
+                    link.click()
+                    document.body.removeChild(link)
+                  }}>
                     <Download className="w-5 h-5 mr-2" /> Download Enhanced
                   </Button>
                 ) : (
